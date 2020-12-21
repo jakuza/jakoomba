@@ -15,7 +15,7 @@ void setup() {
     {4, 5},
   };
 
-  motor.begin(motorpins, 1000);
+  motor.begin(motorpins, 200);
   motor.trigger(motor.EVT_FORWARD);
   
   button1.begin(12)
