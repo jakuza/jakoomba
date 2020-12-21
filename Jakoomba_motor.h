@@ -13,7 +13,7 @@ class Jakoomba_motor: public Machine
 {
   public:
     enum { IDLE, FORWARD, REVERSE, TURNING }; // STATES
-    enum { EVT_TIMER, EVT_FORWARD, EVT_REVERSE, EVT_STOP, ELSE }; // EVENTS
+    enum { EVT_BUMP, EVT_TIMER, EVT_FORWARD, EVT_REVERSE, EVT_STOP, ELSE }; // EVENTS
     Jakoomba_motor( void ) : Machine() {};
     Jakoomba_motor& begin(int pins[][2], int bump_amplitude);
     Jakoomba_motor& trace( Stream & stream );
@@ -22,6 +22,7 @@ class Jakoomba_motor: public Machine
     Jakoomba_motor& onChange( Machine& machine, int event = 0 );
     Jakoomba_motor& onChange( atm_cb_push_t callback, int idx = 0 );
     
+    Jakoomba_motor& bump( void );
     Jakoomba_motor& timer( void );
     Jakoomba_motor& forward( void );
     Jakoomba_motor& reverse( void );

@@ -13,11 +13,11 @@
 Jakoomba_motor& Jakoomba_motor::begin(int pins[][2], int bump_amplitude) 
 {
   const static state_t state_table[] PROGMEM = {
-    /*               ON_ENTER  ON_LOOP  ON_EXIT   EVT_TIMER   EVT_FORWARD  EVT_REVERSE   EVT_STOP  ELSE */
-    /*    IDLE */    ENT_IDLE,      -1,      -1,         -1,      FORWARD,     REVERSE,        -1,   -1,
-    /* FORWARD */ ENT_FORWARD,      -1,      -1,         -1,           -1,     REVERSE,      IDLE,   -1,
-    /* REVERSE */ ENT_REVERSE,      -1,      -1,    TURNING,      FORWARD,          -1,      IDLE,   -1,
-    /* TURNING */ ENT_TURNING,      -1,      -1,    FORWARD,           -1,          -1,        -1,   -1,
+    /*               ON_ENTER  ON_LOOP  ON_EXIT   EVT_BUMP  EVT_TIMER   EVT_FORWARD  EVT_REVERSE   EVT_STOP  ELSE */
+    /*    IDLE */    ENT_IDLE,      -1,      -1,        -1,        -1,      FORWARD,     REVERSE,        -1,   -1,
+    /* FORWARD */ ENT_FORWARD,      -1,      -1,   REVERSE,        -1,           -1,     REVERSE,      IDLE,   -1,
+    /* REVERSE */ ENT_REVERSE,      -1,      -1,        -1,   TURNING,      FORWARD,          -1,      IDLE,   -1,
+    /* TURNING */ ENT_TURNING,      -1,      -1,   REVERSE,   FORWARD,           -1,          -1,        -1,   -1,
   };
   Machine::begin( state_table, ELSE );
 

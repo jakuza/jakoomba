@@ -21,7 +21,7 @@ void setup() {
   button1.begin(12)
     .onPress(motor, motor.EVT_FORWARD);  
   button2.begin(11)
-    .onPress(motor, motor.EVT_REVERSE);
+    .onPress(motor, motor.EVT_BUMP);
   button3.begin(10)
     .onPress(motor, motor.EVT_STOP);
   
