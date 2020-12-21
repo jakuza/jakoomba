@@ -65,6 +65,27 @@ void Jakoomba_motor::action( int id )
   }
 }
 
+void Jakoomba_motor::stopMotors() 
+{
+  digitalWrite(motorpins[LEFT_MOTOR][MOTOR_FORWARD], LOW);
+  digitalWrite(motorpins[LEFT_MOTOR][MOTOR_REVERSE], LOW);
+  digitalWrite(motorpins[RIGHT_MOTOR][MOTOR_FORWARD], LOW);
+  digitalWrite(motorpins[RIGHT_MOTOR][MOTOR_REVERSE], LOW);
+}
+
+void Jakoomba_motor::operateMotor(bool motor, bool direction) 
+{
+  digitalWrite(motorpins[motor][direction], HIGH);
+  digitalWrite(motorpins[motor][!direction], LOW);
+}
+
+void Jakoomba_motor::operateMotors(bool left, bool right) 
+{
+  digitalWrite(motorpins[LEFT_MOTOR][left], HIGH);
+  digitalWrite(motorpins[LEFT_MOTOR][!left], LOW);
+  digitalWrite(motorpins[RIGHT_MOTOR][right], HIGH);
+  digitalWrite(motorpins[RIGHT_MOTOR][!right], LOW);
+}
 /* Optionally override the default trigger() method
  * Control how your machine processes triggers
  */
@@ -135,24 +156,4 @@ Jakoomba_motor& Jakoomba_motor::trace( Stream & stream )
   Machine::setTrace( &stream, atm_serial_debug::trace,
     "MOTOR\0EVT_FORWARD\0EVT_REVERSE\0EVT_STOP\0ELSE\0IDLE\0FORWARD\0REVERSE" );
   return *this;
-}
-
-void Jakoomba_motor::stopMotors() 
-{
-  digitalWrite(motorpins[LEFT_MOTOR][MOTOR_FORWARD], LOW);
-  digitalWrite(motorpins[LEFT_MOTOR][MOTOR_REVERSE], LOW);
-  digitalWrite(motorpins[RIGHT_MOTOR][MOTOR_FORWARD], LOW);
-  digitalWrite(motorpins[RIGHT_MOTOR][MOTOR_REVERSE], LOW);
-}
-
-void Jakoomba_motor::operateMotor(bool motor, bool direction) 
-{
-  digitalWrite(motorpins[motor][direction], HIGH);
-  digitalWrite(motorpins[motor][~direction], LOW);
-}
-
-void Jakoomba_motor::operateMotors(bool left, bool right) 
-{
-  digitalWrite(motorpins[LEFT_MOTOR][left], HIGH);
-  digitalWrite(motorpins[LEFT_MOTOR][~left], LOW);
 }
