@@ -12,10 +12,10 @@
 class Jakoomba_motor: public Machine 
 {
   public:
-    enum { IDLE, FORWARD, REVERSE }; // STATES
+    enum { IDLE, FORWARD, REVERSE, TURNING }; // STATES
     enum { EVT_TIMER, EVT_FORWARD, EVT_REVERSE, EVT_STOP, ELSE }; // EVENTS
     Jakoomba_motor( void ) : Machine() {};
-    Jakoomba_motor& begin(int pins[][2]);
+    Jakoomba_motor& begin(int pins[][2], int bump_amplitude);
     Jakoomba_motor& trace( Stream & stream );
     Jakoomba_motor& trigger( int event );
     int state( void );
@@ -27,9 +27,8 @@ class Jakoomba_motor: public Machine
     Jakoomba_motor& reverse( void );
     Jakoomba_motor& stop( void );
     
-
   private:
-    enum { ENT_IDLE, ENT_FORWARD, ENT_REVERSE }; // ACTIONS
+    enum { ENT_IDLE, ENT_FORWARD, ENT_REVERSE, ENT_TURNING }; // ACTIONS
     enum { ON_CHANGE, CONN_MAX }; // CONNECTORS
     atm_connector connectors[CONN_MAX];
     int event( int id );
