@@ -13,10 +13,10 @@
 Jakoomba_motor& Jakoomba_motor::begin(int pins[][2]) 
 {
   const static state_t state_table[] PROGMEM = {
-    /*               ON_ENTER  ON_LOOP  ON_EXIT  EVT_FORWARD  EVT_REVERSE   EVT_STOP  ELSE */
-    /*    IDLE */    ENT_IDLE,      -1,      -1,     FORWARD,     REVERSE,        -1,   -1,
-    /* FORWARD */ ENT_FORWARD,      -1,      -1,          -1,     REVERSE,      IDLE,   -1,
-    /* REVERSE */ ENT_REVERSE,      -1,      -1,     FORWARD,          -1,      IDLE,   -1,
+    /*               ON_ENTER  ON_LOOP  ON_EXIT   EVT_TIMER   EVT_FORWARD  EVT_REVERSE   EVT_STOP  ELSE */
+    /*    IDLE */    ENT_IDLE,      -1,      -1,         -1,      FORWARD,     REVERSE,        -1,   -1,
+    /* FORWARD */ ENT_FORWARD,      -1,      -1,         -1,           -1,     REVERSE,      IDLE,   -1,
+    /* REVERSE */ ENT_REVERSE,      -1,      -1,    FORWARD,      FORWARD,          -1,      IDLE,   -1,
   };
   Machine::begin( state_table, ELSE );
 
@@ -26,6 +26,8 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2])
       pinMode(pins[i][j], OUTPUT);
     }
   }
+
+  _timer.set(1000);
   
   return *this;          
 }
@@ -36,10 +38,10 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2])
 
 int Jakoomba_motor::event( int id ) 
 {
-//  switch ( id ) {
-//    case EVT_TIMER:
-//      return timer.expired(this);
-//  }
+  switch ( id ) {
+    case EVT_TIMER:
+      return _timer.expired(this);
+  }
   return 0;
 }
 
@@ -113,6 +115,12 @@ int Jakoomba_motor::state( void )
  *
  */
 
+Jakoomba_motor& Jakoomba_motor::timer() 
+{
+  trigger( EVT_TIMER );
+  return *this;
+}
+
 Jakoomba_motor& Jakoomba_motor::forward() 
 {
   trigger( EVT_FORWARD );
@@ -154,6 +162,6 @@ Jakoomba_motor& Jakoomba_motor::onChange( atm_cb_push_t callback, int idx )
 Jakoomba_motor& Jakoomba_motor::trace( Stream & stream ) 
 {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "MOTOR\0EVT_FORWARD\0EVT_REVERSE\0EVT_STOP\0ELSE\0IDLE\0FORWARD\0REVERSE" );
+    "MOTOR\0EVT_TIMER\0EVT_FORWARD\0EVT_REVERSE\0EVT_STOP\0ELSE\0IDLE\0FORWARD\0REVERSE" );
   return *this;
 }
