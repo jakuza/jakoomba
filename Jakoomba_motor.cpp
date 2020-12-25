@@ -10,14 +10,15 @@
  * Add extra initialization code
  */
 
-Jakoomba_motor& Jakoomba_motor::begin(int pins[][2], int bump_amplitude) 
+Jakoomba_motor& Jakoomba_motor::begin(int pins[][2]) 
 {
   const static state_t state_table[] PROGMEM = {
-    /*               ON_ENTER  ON_LOOP  ON_EXIT   EVT_BUMP  EVT_TIMER   EVT_FORWARD  EVT_REVERSE   EVT_STOP  ELSE */
-    /*    IDLE */    ENT_IDLE,      -1,      -1,        -1,        -1,      FORWARD,     REVERSE,        -1,   -1,
-    /* FORWARD */ ENT_FORWARD,      -1,      -1,   REVERSE,        -1,           -1,     REVERSE,      IDLE,   -1,
-    /* REVERSE */ ENT_REVERSE,      -1,      -1,        -1,   TURNING,      FORWARD,          -1,      IDLE,   -1,
-    /* TURNING */ ENT_TURNING,      -1,      -1,   REVERSE,   FORWARD,           -1,          -1,        -1,   -1,
+    /*               ON_ENTER    ON_LOOP  ON_EXIT  EVT_STOP  EVT_RIGHT  EVT_LEFT  EVT_REVERSE  EVT_FORWARD  ELSE */
+    /*    IDLE */    ENT_IDLE, ATM_SLEEP,      -1,       -1,     RIGHT,     LEFT,     REVERSE,     FORWARD,   -1,
+    /* FORWARD */ ENT_FORWARD,        -1,      -1,     IDLE,     RIGHT,     LEFT,     REVERSE,          -1,   -1,
+    /* REVERSE */ ENT_REVERSE,        -1,      -1,     IDLE,     RIGHT,     LEFT,          -1,     FORWARD,   -1,
+    /*    LEFT */    ENT_LEFT,        -1,      -1,     IDLE,     RIGHT,       -1,     REVERSE,     FORWARD,   -1,
+    /*   RIGHT */   ENT_RIGHT,        -1,      -1,     IDLE,        -1,     LEFT,     REVERSE,     FORWARD,   -1,
   };
   Machine::begin( state_table, ELSE );
 
@@ -28,8 +29,6 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2], int bump_amplitude)
     }
   }
 
-  _timer.set(bump_amplitude);
-  
   return *this;          
 }
 
@@ -39,10 +38,10 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2], int bump_amplitude)
 
 int Jakoomba_motor::event( int id ) 
 {
-  switch ( id ) {
-    case EVT_TIMER:
-      return _timer.expired(this);
-  }
+//  switch ( id ) {
+//    case EVT_ESC_TIMER:
+//      return _timer.expired(this);
+//  }
   return 0;
 }
 
@@ -59,13 +58,18 @@ void Jakoomba_motor::action( int id )
     case ENT_IDLE:
       stopMotors();
       return;
+    case LP_IDLE:
+      return;    
     case ENT_FORWARD:
       operateMotors(MOTOR_FORWARD, MOTOR_FORWARD);
       return;
     case ENT_REVERSE:
       operateMotors(MOTOR_REVERSE, MOTOR_REVERSE);
       return;
-    case ENT_TURNING:
+    case ENT_LEFT:
+      operateMotors(MOTOR_REVERSE, MOTOR_FORWARD);
+      return;
+    case ENT_RIGHT:
       operateMotors(MOTOR_FORWARD, MOTOR_REVERSE);
       return;
   }
@@ -79,19 +83,14 @@ void Jakoomba_motor::stopMotors()
   digitalWrite(motorpins[RIGHT_MOTOR][MOTOR_REVERSE], LOW);
 }
 
-void Jakoomba_motor::operateMotor(bool motor, bool direction) 
+void Jakoomba_motor::operateMotors(bool left_motor_direction, bool right_motor_direction) 
 {
-  digitalWrite(motorpins[motor][direction], HIGH);
-  digitalWrite(motorpins[motor][!direction], LOW);
+  digitalWrite(motorpins[LEFT_MOTOR][left_motor_direction], HIGH);
+  digitalWrite(motorpins[LEFT_MOTOR][!left_motor_direction], LOW);
+  digitalWrite(motorpins[RIGHT_MOTOR][right_motor_direction], HIGH);
+  digitalWrite(motorpins[RIGHT_MOTOR][!right_motor_direction], LOW);
 }
 
-void Jakoomba_motor::operateMotors(bool left, bool right) 
-{
-  digitalWrite(motorpins[LEFT_MOTOR][left], HIGH);
-  digitalWrite(motorpins[LEFT_MOTOR][!left], LOW);
-  digitalWrite(motorpins[RIGHT_MOTOR][right], HIGH);
-  digitalWrite(motorpins[RIGHT_MOTOR][!right], LOW);
-}
 /* Optionally override the default trigger() method
  * Control how your machine processes triggers
  */
@@ -119,43 +118,28 @@ int Jakoomba_motor::state( void )
  *
  */
 
-Jakoomba_motor& Jakoomba_motor::timer() 
-{
-  trigger( EVT_TIMER );
+Jakoomba_motor& Jakoomba_motor::left() {
+  trigger( EVT_LEFT );
   return *this;
 }
 
-Jakoomba_motor& Jakoomba_motor::forward() 
-{
+Jakoomba_motor& Jakoomba_motor::right() {
+  trigger( EVT_RIGHT );
+  return *this;
+}
+
+Jakoomba_motor& Jakoomba_motor::forward() {
   trigger( EVT_FORWARD );
   return *this;
 }
 
-Jakoomba_motor& Jakoomba_motor::reverse() 
-{
+Jakoomba_motor& Jakoomba_motor::reverse() {
   trigger( EVT_REVERSE );
   return *this;
 }
 
-Jakoomba_motor& Jakoomba_motor::stop() 
-{
+Jakoomba_motor& Jakoomba_motor::stop() {
   trigger( EVT_STOP );
-  return *this;
-}
-
-/*
- * onChange() push connector variants ( slots 1, autostore 0, broadcast 0 )
- */
-
-Jakoomba_motor& Jakoomba_motor::onChange( Machine& machine, int event ) 
-{
-  onPush( connectors, ON_CHANGE, 0, 1, 1, machine, event );
-  return *this;
-}
-
-Jakoomba_motor& Jakoomba_motor::onChange( atm_cb_push_t callback, int idx ) 
-{
-  onPush( connectors, ON_CHANGE, 0, 1, 1, callback, idx );
   return *this;
 }
 
@@ -166,6 +150,6 @@ Jakoomba_motor& Jakoomba_motor::onChange( atm_cb_push_t callback, int idx )
 Jakoomba_motor& Jakoomba_motor::trace( Stream & stream ) 
 {
   Machine::setTrace( &stream, atm_serial_debug::trace,
-    "MOTOR\0EVT_TIMER\0EVT_FORWARD\0EVT_REVERSE\0EVT_STOP\0ELSE\0IDLE\0FORWARD\0REVERSE\0TURNING" );
+    "MACHINE\0EVT_STOP\0EVT_RIGHT\0EVT_LEFT\0EVT_REVERSE\0EVT_FORWARD\0ELSE\0FORWARD\0REVERSE\0IDLE\0LEFT\0RIGHT" );
   return *this;
 }

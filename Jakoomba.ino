@@ -1,9 +1,9 @@
-#include "Jakoomba_motor.h"
+#include "Jakoomba.h"
 
-// Basic Arduino sketch - instantiates the state machine and nothing else
-
+Jakoomba robot;
 Jakoomba_motor motor;
-Atm_button button1, button2, button3;
+Atm_button bumper_left, bumper_right;
+
 
 void setup() {
 
@@ -11,20 +11,25 @@ void setup() {
   motor.trace( Serial );
 
   int motorpins[2][2] = {
-    {2, 3},
+    {21, 14},
     {4, 5},
   };
 
-  motor.begin(motorpins, 200);
-  motor.trigger(motor.EVT_FORWARD);
+  motor.begin(motorpins);
+
+  robot.begin()
+    .onForward(motor, motor.EVT_FORWARD)
+    .onEscleft(motor, motor.EVT_REVERSE)
+    .onEscright(motor, motor.EVT_REVERSE)
+    .onTurnleft(motor, motor.EVT_LEFT)
+    .onTurnright(motor, motor.EVT_RIGHT);
   
-  button1.begin(12)
-    .onPress(motor, motor.EVT_FORWARD);  
-  button2.begin(11)
-    .onPress(motor, motor.EVT_BUMP);
-  button3.begin(10)
-    .onPress(motor, motor.EVT_STOP);
-  
+  bumper_left.begin(12)
+    .onPress(robot, robot.EVT_BUMP_LEFT);  
+  bumper_right.begin(11)
+    .onPress(robot, robot.EVT_BUMP_RIGHT);
+
+  robot.start();
 }
 
 void loop() {
