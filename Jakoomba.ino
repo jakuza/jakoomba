@@ -17,8 +17,8 @@ struct {
 
 void setup() {
 
-  Serial.begin( 9600 );
-  motor.trace( Serial );
+  Serial.begin(9600);
+  motor.trace(Serial);
 
   motor.begin(pin.motors);
 

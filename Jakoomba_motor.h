@@ -14,22 +14,22 @@ class Jakoomba_motor: public Machine
   public:
     enum { IDLE, FORWARD, REVERSE, LEFT, RIGHT }; // STATES
     enum { EVT_STOP, EVT_RIGHT, EVT_LEFT, EVT_REVERSE, EVT_FORWARD, ELSE }; // EVENTS
-    Jakoomba_motor( void ) : Machine() {};
+    Jakoomba_motor(void) : Machine() {};
     Jakoomba_motor& begin(int pins[][2]);
-    Jakoomba_motor& trace( Stream & stream );
-    Jakoomba_motor& trigger( int event );
-    int state( void );
+    Jakoomba_motor& trace(Stream & stream);
+    Jakoomba_motor& trigger(int event);
+    int state(void);
     
-    Jakoomba_motor& left( void );
-    Jakoomba_motor& right( void );
-    Jakoomba_motor& forward( void );
-    Jakoomba_motor& reverse( void );
-    Jakoomba_motor& stop( void );
+    Jakoomba_motor& left(void);
+    Jakoomba_motor& right(void);
+    Jakoomba_motor& forward(void);
+    Jakoomba_motor& reverse(void);
+    Jakoomba_motor& stop(void);
     
   private:
     enum { ENT_FORWARD, ENT_REVERSE, ENT_IDLE, LP_IDLE, ENT_LEFT, ENT_RIGHT }; // ACTIONS
-    int event( int id );
-    void action( int id );
+    int event(int id);
+    void action(int id);
 
     enum {LEFT_MOTOR, RIGHT_MOTOR};
     enum {MOTOR_FORWARD, MOTOR_REVERSE};        

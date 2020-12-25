@@ -16,7 +16,7 @@ Jakoomba& Jakoomba::begin() {
     /*  TURN_LEFT */  ENT_TURN_LEFT,        -1,      -1,        -1,     IDLE,     ESC_RIGHT,             -1,                -1,        FORWARD,   -1,
   };
   // clang-format on
-  Machine::begin( state_table, ELSE );
+  Machine::begin(state_table, ELSE);
 
   reverse_timer.set(500);
   turn_timer.set(500);
@@ -28,8 +28,8 @@ Jakoomba& Jakoomba::begin() {
  * The code must return 1 to trigger the event
  */
 
-int Jakoomba::event( int id ) {
-  switch ( id ) {
+int Jakoomba::event(int id) {
+  switch (id) {
     case EVT_REVERSE_TIMER:
       return reverse_timer.expired(this);
     case EVT_TURN_TIMER:
@@ -42,16 +42,16 @@ int Jakoomba::event( int id ) {
  * This generates the 'output' for the state machine
  *
  * Available connectors:
- *   push( connectors, ON_CHANGE, 0, <v>, <up> );
- *   push( connectors, ON_ESCLEFT, 0, <v>, <up> );
- *   push( connectors, ON_ESCRIGHT, 0, <v>, <up> );
- *   push( connectors, ON_FORWARD, 0, <v>, <up> );
- *   push( connectors, ON_TURNLEFT, 0, <v>, <up> );
- *   push( connectors, ON_TURNRIGHT, 0, <v>, <up> );
+ *   push(connectors, ON_CHANGE, 0, <v>, <up>);
+ *   push(connectors, ON_ESCLEFT, 0, <v>, <up>);
+ *   push(connectors, ON_ESCRIGHT, 0, <v>, <up>);
+ *   push(connectors, ON_FORWARD, 0, <v>, <up>);
+ *   push(connectors, ON_TURNLEFT, 0, <v>, <up>);
+ *   push(connectors, ON_TURNRIGHT, 0, <v>, <up>);
  */
 
-void Jakoomba::action( int id ) {
-  switch ( id ) {
+void Jakoomba::action(int id) {
+  switch (id) {
     case ENT_IDLE:
       return;
     case ENT_FORWARD:
@@ -76,8 +76,8 @@ void Jakoomba::action( int id ) {
  * Control how your machine processes triggers
  */
 
-Jakoomba& Jakoomba::trigger( int event ) {
-  Machine::trigger( event );
+Jakoomba& Jakoomba::trigger(int event) {
+  Machine::trigger(event);
   return *this;
 }
 
@@ -85,7 +85,7 @@ Jakoomba& Jakoomba::trigger( int event ) {
  * Control what the machine returns when another process requests its state
  */
 
-int Jakoomba::state( void ) {
+int Jakoomba::state(void) {
   return Machine::state();
 }
 
@@ -98,106 +98,106 @@ int Jakoomba::state( void ) {
  */
 
 Jakoomba& Jakoomba::start() {
-  trigger( EVT_START );
+  trigger(EVT_START);
   return *this;
 }
 
 Jakoomba& Jakoomba::halt() {
-  trigger( EVT_HALT );
+  trigger(EVT_HALT);
   return *this;
 }
 
 Jakoomba& Jakoomba::bump_left() {
-  trigger( EVT_BUMP_LEFT );
+  trigger(EVT_BUMP_LEFT);
   return *this;
 }
 
 Jakoomba& Jakoomba::bump_right() {
-  trigger( EVT_BUMP_RIGHT );
+  trigger(EVT_BUMP_RIGHT);
   return *this;
 }
 
 /*
- * onChange() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onChange() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onChange( Machine& machine, int event ) {
-  onPush( connectors, ON_CHANGE, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onChange(Machine& machine, int event) {
+  onPush(connectors, ON_CHANGE, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onChange( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_CHANGE, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onChange(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_CHANGE, 0, 1, 1, callback, idx);
   return *this;
 }
 
 /*
- * onEscleft() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onEscleft() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onEscleft( Machine& machine, int event ) {
-  onPush( connectors, ON_ESCLEFT, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onEscleft(Machine& machine, int event) {
+  onPush(connectors, ON_ESCLEFT, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onEscleft( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_ESCLEFT, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onEscleft(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_ESCLEFT, 0, 1, 1, callback, idx);
   return *this;
 }
 
 /*
- * onEscright() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onEscright() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onEscright( Machine& machine, int event ) {
-  onPush( connectors, ON_ESCRIGHT, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onEscright(Machine& machine, int event) {
+  onPush(connectors, ON_ESCRIGHT, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onEscright( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_ESCRIGHT, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onEscright(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_ESCRIGHT, 0, 1, 1, callback, idx);
   return *this;
 }
 
 /*
- * onForward() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onForward() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onForward( Machine& machine, int event ) {
-  onPush( connectors, ON_FORWARD, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onForward(Machine& machine, int event) {
+  onPush(connectors, ON_FORWARD, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onForward( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_FORWARD, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onForward(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_FORWARD, 0, 1, 1, callback, idx);
   return *this;
 }
 
 /*
- * onTurnleft() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onTurnleft() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onTurnleft( Machine& machine, int event ) {
-  onPush( connectors, ON_TURNLEFT, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onTurnleft(Machine& machine, int event) {
+  onPush(connectors, ON_TURNLEFT, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onTurnleft( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_TURNLEFT, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onTurnleft(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_TURNLEFT, 0, 1, 1, callback, idx);
   return *this;
 }
 
 /*
- * onTurnright() push connector variants ( slots 1, autostore 0, broadcast 0 )
+ * onTurnright() push connector variants (slots 1, autostore 0, broadcast 0)
  */
 
-Jakoomba& Jakoomba::onTurnright( Machine& machine, int event ) {
-  onPush( connectors, ON_TURNRIGHT, 0, 1, 1, machine, event );
+Jakoomba& Jakoomba::onTurnright(Machine& machine, int event) {
+  onPush(connectors, ON_TURNRIGHT, 0, 1, 1, machine, event);
   return *this;
 }
 
-Jakoomba& Jakoomba::onTurnright( atm_cb_push_t callback, int idx ) {
-  onPush( connectors, ON_TURNRIGHT, 0, 1, 1, callback, idx );
+Jakoomba& Jakoomba::onTurnright(atm_cb_push_t callback, int idx) {
+  onPush(connectors, ON_TURNRIGHT, 0, 1, 1, callback, idx);
   return *this;
 }
 
@@ -205,8 +205,8 @@ Jakoomba& Jakoomba::onTurnright( atm_cb_push_t callback, int idx ) {
  * Sets the symbol table and the default logging method for serial monitoring
  */
 
-Jakoomba& Jakoomba::trace( Stream & stream ) {
-  Machine::setTrace( &stream, atm_serial_debug::trace,
-    "JAKOOMBA\0EVT_START\0EVT_HALT\0EVT_BUMP_LEFT\0EVT_BUMP_RIGHT\0EVT_REVERSE_TIMER\0EVT_TURN_TIMER\0ELSE\0IDLE\0FORWARD\0ESC_RIGHT\0ESC_LEFT\0TURN_RIGHT\0TURN_LEFT" );
+Jakoomba& Jakoomba::trace(Stream & stream) {
+  Machine::setTrace(&stream, atm_serial_debug::trace,
+    "JAKOOMBA\0EVT_START\0EVT_HALT\0EVT_BUMP_LEFT\0EVT_BUMP_RIGHT\0EVT_REVERSE_TIMER\0EVT_TURN_TIMER\0ELSE\0IDLE\0FORWARD\0ESC_RIGHT\0ESC_LEFT\0TURN_RIGHT\0TURN_LEFT");
   return *this;
 }

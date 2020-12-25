@@ -20,7 +20,7 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2])
     /*    LEFT */    ENT_LEFT,        -1,      -1,     IDLE,     RIGHT,       -1,     REVERSE,     FORWARD,   -1,
     /*   RIGHT */   ENT_RIGHT,        -1,      -1,     IDLE,        -1,     LEFT,     REVERSE,     FORWARD,   -1,
   };
-  Machine::begin( state_table, ELSE );
+  Machine::begin(state_table, ELSE);
 
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
@@ -36,9 +36,9 @@ Jakoomba_motor& Jakoomba_motor::begin(int pins[][2])
  * The code must return 1 to trigger the event
  */
 
-int Jakoomba_motor::event( int id ) 
+int Jakoomba_motor::event(int id) 
 {
-//  switch ( id ) {
+//  switch (id) {
 //    case EVT_ESC_TIMER:
 //      return _timer.expired(this);
 //  }
@@ -49,12 +49,12 @@ int Jakoomba_motor::event( int id )
  * This generates the 'output' for the state machine
  *
  * Available connectors:
- *   push( connectors, ON_CHANGE, 0, <v>, <up> );
+ *   push(connectors, ON_CHANGE, 0, <v>, <up>);
  */
 
-void Jakoomba_motor::action( int id ) 
+void Jakoomba_motor::action(int id) 
 {
-  switch ( id ) {
+  switch (id) {
     case ENT_IDLE:
       stopMotors();
       return;
@@ -95,9 +95,9 @@ void Jakoomba_motor::operateMotors(bool left_motor_direction, bool right_motor_d
  * Control how your machine processes triggers
  */
 
-Jakoomba_motor& Jakoomba_motor::trigger( int event ) 
+Jakoomba_motor& Jakoomba_motor::trigger(int event) 
 {
-  Machine::trigger( event );
+  Machine::trigger(event);
   return *this;
 }
 
@@ -105,7 +105,7 @@ Jakoomba_motor& Jakoomba_motor::trigger( int event )
  * Control what the machine returns when another process requests its state
  */
 
-int Jakoomba_motor::state( void ) 
+int Jakoomba_motor::state(void) 
 {
   return Machine::state();
 }
@@ -119,27 +119,27 @@ int Jakoomba_motor::state( void )
  */
 
 Jakoomba_motor& Jakoomba_motor::left() {
-  trigger( EVT_LEFT );
+  trigger(EVT_LEFT);
   return *this;
 }
 
 Jakoomba_motor& Jakoomba_motor::right() {
-  trigger( EVT_RIGHT );
+  trigger(EVT_RIGHT);
   return *this;
 }
 
 Jakoomba_motor& Jakoomba_motor::forward() {
-  trigger( EVT_FORWARD );
+  trigger(EVT_FORWARD);
   return *this;
 }
 
 Jakoomba_motor& Jakoomba_motor::reverse() {
-  trigger( EVT_REVERSE );
+  trigger(EVT_REVERSE);
   return *this;
 }
 
 Jakoomba_motor& Jakoomba_motor::stop() {
-  trigger( EVT_STOP );
+  trigger(EVT_STOP);
   return *this;
 }
 
@@ -147,9 +147,9 @@ Jakoomba_motor& Jakoomba_motor::stop() {
  * Sets the symbol table and the default logging method for serial monitoring
  */
 
-Jakoomba_motor& Jakoomba_motor::trace( Stream & stream ) 
+Jakoomba_motor& Jakoomba_motor::trace(Stream & stream) 
 {
-  Machine::setTrace( &stream, atm_serial_debug::trace,
-    "MACHINE\0EVT_STOP\0EVT_RIGHT\0EVT_LEFT\0EVT_REVERSE\0EVT_FORWARD\0ELSE\0FORWARD\0REVERSE\0IDLE\0LEFT\0RIGHT" );
+  Machine::setTrace(&stream, atm_serial_debug::trace,
+    "MACHINE\0EVT_STOP\0EVT_RIGHT\0EVT_LEFT\0EVT_REVERSE\0EVT_FORWARD\0ELSE\0FORWARD\0REVERSE\0IDLE\0LEFT\0RIGHT");
   return *this;
 }

@@ -9,35 +9,35 @@ class Jakoomba: public Machine {
  public:
   enum { IDLE, FORWARD, ESC_RIGHT, ESC_LEFT, TURN_RIGHT, TURN_LEFT }; // STATES
   enum { EVT_START, EVT_HALT, EVT_BUMP_LEFT, EVT_BUMP_RIGHT, EVT_REVERSE_TIMER, EVT_TURN_TIMER, ELSE }; // EVENTS
-  Jakoomba( void ) : Machine() {};
-  Jakoomba& begin( void );
-  Jakoomba& trace( Stream & stream );
-  Jakoomba& trigger( int event );
-  int state( void );
-  Jakoomba& onChange( Machine& machine, int event = 0 );
-  Jakoomba& onChange( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& onEscleft( Machine& machine, int event = 0 );
-  Jakoomba& onEscleft( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& onEscright( Machine& machine, int event = 0 );
-  Jakoomba& onEscright( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& onForward( Machine& machine, int event = 0 );
-  Jakoomba& onForward( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& onTurnleft( Machine& machine, int event = 0 );
-  Jakoomba& onTurnleft( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& onTurnright( Machine& machine, int event = 0 );
-  Jakoomba& onTurnright( atm_cb_push_t callback, int idx = 0 );
-  Jakoomba& start( void );
-  Jakoomba& halt( void );
-  Jakoomba& bump_left( void );
-  Jakoomba& bump_right( void );
+  Jakoomba(void) : Machine() {};
+  Jakoomba& begin(void);
+  Jakoomba& trace(Stream & stream);
+  Jakoomba& trigger(int event);
+  int state(void);
+  Jakoomba& onChange(Machine& machine, int event = 0);
+  Jakoomba& onChange(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& onEscleft(Machine& machine, int event = 0);
+  Jakoomba& onEscleft(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& onEscright(Machine& machine, int event = 0);
+  Jakoomba& onEscright(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& onForward(Machine& machine, int event = 0);
+  Jakoomba& onForward(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& onTurnleft(Machine& machine, int event = 0);
+  Jakoomba& onTurnleft(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& onTurnright(Machine& machine, int event = 0);
+  Jakoomba& onTurnright(atm_cb_push_t callback, int idx = 0);
+  Jakoomba& start(void);
+  Jakoomba& halt(void);
+  Jakoomba& bump_left(void);
+  Jakoomba& bump_right(void);
 
  private:
   enum { ENT_IDLE, ENT_FORWARD, ENT_ESC_RIGHT, ENT_ESC_LEFT, ENT_TURN_RIGHT, ENT_TURN_LEFT }; // ACTIONS
   enum { ON_CHANGE, ON_ESCLEFT, ON_ESCRIGHT, ON_FORWARD, ON_TURNLEFT, ON_TURNRIGHT, CONN_MAX }; // CONNECTORS
   atm_connector connectors[CONN_MAX];
   atm_timer_millis reverse_timer, turn_timer;
-  int event( int id ); 
-  void action( int id );
+  int event(int id); 
+  void action(int id);
 
 };
 
