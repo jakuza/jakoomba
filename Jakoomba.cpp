@@ -18,8 +18,8 @@ Jakoomba& Jakoomba::begin() {
   // clang-format on
   Machine::begin(state_table, ELSE);
 
-  reverse_timer.set(500);
-  turn_timer.set(500);
+  reverse_timer.set(400);
+  turn_timer.set(200);
 
   return *this;          
 }

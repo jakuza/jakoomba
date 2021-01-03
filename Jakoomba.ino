@@ -1,5 +1,5 @@
 #include "Jakoomba.h"
-
+ 
 Jakoomba robot;
 Jakoomba_motor motor;
 Atm_button bumper_left, bumper_right;
@@ -9,8 +9,8 @@ struct {
     int bumpers[2];
 } pin {
   {
-    {21, 14},
-    {4, 5},
+    {14, 15},
+    {2, 3},
   },
   {11, 12}
 };
